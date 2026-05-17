@@ -49,6 +49,40 @@
   border-left: 1px solid rgba(15, 30, 61, 0.1);
 }
 
+.course-row--intensive {
+  border-left-color: var(--color-secondary);
+}
+
+.course-row--personal {
+  border-left-color: var(--color-primary-light);
+}
+
+.course-meta--online {
+  border-left: 4px solid var(--color-accent);
+}
+
+.course-meta--intensive {
+  border-left: 4px solid var(--color-secondary);
+}
+
+.course-meta--personal {
+  border-left: 4px solid var(--color-primary-light);
+}
+
+.course-info .feature-list--course {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.course-meta .meta-item {
+  margin-bottom: 0.85rem;
+}
+
+.course-meta .meta-item:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
 .tag {
   display: inline-flex;
   width: fit-content;
@@ -414,6 +448,16 @@
 }
 
 @media (max-width: 640px) {
+  .course-info,
+  .course-meta {
+    padding: 1.25rem;
+  }
+  .course-info .feature-list--course {
+    grid-template-columns: 1fr;
+  }
+  .course-price {
+    font-size: 1.9rem;
+  }
   .values-grid,
   .partnership-grid {
     grid-template-columns: 1fr;

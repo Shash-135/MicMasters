@@ -6,15 +6,18 @@ export default function Testimonials() {
 
   const testimonialVideos = [
     {
-      src: "/assets/videos/WhatsApp%20Video%202026-05-16%20at%2020.27.31.mp4",
+      mp4: "/assets/videos/testimonial-1-optimized.mp4",
+      webm: "/assets/videos/testimonial-1-optimized.webm",
       title: "Student transformation clip 1",
     },
     {
-      src: "/assets/videos/WhatsApp%20Video%202026-05-16%20at%2020.30.36.mp4",
+      mp4: "/assets/videos/testimonial-2-optimized.mp4",
+      webm: "/assets/videos/testimonial-2-optimized.webm",
       title: "Student transformation clip 2",
     },
     {
-      src: "/assets/videos/WhatsApp%20Video%202026-05-16%20at%2020.30.37.mp4",
+      mp4: "/assets/videos/testimonial-3-optimized.mp4",
+      webm: "/assets/videos/testimonial-3-optimized.webm",
       title: "Student transformation clip 3",
     },
   ];
@@ -129,19 +132,23 @@ export default function Testimonials() {
               const isActive = index === activeVideoIndex;
 
               return (
-                <article key={video.src} ref={(element) => { itemRefs.current[index] = element; }} className={`fade-up delay-${(index + 1) * 100}`} style={cardStyles}>
+                <article key={video.mp4} ref={(element) => { itemRefs.current[index] = element; }} className={`fade-up delay-${(index + 1) * 100}`} style={cardStyles}>
                   <div style={{ flex: '1 1 400px', background: '#000', position: 'relative', minHeight: '350px' }}>
                     <video
                       ref={(element) => {
                         videoRefs.current[index] = element;
                       }}
-                      src={video.src}
                       title={video.title}
+                      poster="/assets/images/WhatsApp%20Image%202026-05-16%20at%2020.41.04.jpeg"
+                      preload={isActive ? "auto" : "metadata"}
                       loop
                       muted
                       playsInline
                       style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
+                    >
+                      <source src={video.mp4} type="video/mp4" />
+                      <source src={video.webm} type="video/webm" />
+                    </video>
                   </div>
                   <div style={{ flex: '1 1 400px', padding: '3rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
                     <i className="fas fa-quote-left" aria-hidden="true" style={{ position: 'absolute', top: '2rem', right: '3rem', fontSize: '5rem', color: index === 2 ? 'rgba(255,255,255,0.03)' : 'rgba(201,162,39,0.05)' }}></i>

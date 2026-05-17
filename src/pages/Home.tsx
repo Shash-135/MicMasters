@@ -94,13 +94,15 @@ export default function Home() {
       <section style={{ width: '100vw', height: 'clamp(400px, 70vh, 800px)', position: 'relative', overflow: 'hidden', marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}>
         <video 
           ref={videoRef}
-          src="/assets/videos/speech.mp4" 
           poster="/assets/images/mahesh_instructor.jpg"
+          preload="metadata"
           muted 
           onTimeUpdate={handleVideoTimeUpdate}
           playsInline
           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         >
+          <source src="/assets/videos/speech-optimized.mp4" type="video/mp4" />
+          <source src="/assets/videos/speech-optimized.webm" type="video/webm" />
           Your browser does not support the video tag.
         </video>
         {/* Dark gradient overlay for a premium cinematic look */}

@@ -101,8 +101,10 @@ textarea {
 }
 
 .container {
-  width: min(90%, 1200px);
-  margin-inline: auto;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: clamp(1rem, 4vw, 3rem);
 }
 
 .text-center {

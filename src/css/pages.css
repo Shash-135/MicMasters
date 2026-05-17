@@ -447,7 +447,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .course-info,
   .course-meta {
     padding: 1.25rem;

@@ -91,7 +91,7 @@ export default function Home() {
       </div>
 
       {/* Cinematic Full Width Video Section */}
-      <section style={{ width: '100vw', height: 'clamp(400px, 70vh, 800px)', position: 'relative', overflow: 'hidden', marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}>
+      <section style={{ width: '100%', height: 'clamp(400px, 70vh, 800px)', position: 'relative', overflow: 'hidden' }}>
         <video 
           ref={videoRef}
           poster="/assets/images/mahesh_instructor.jpg"
@@ -249,7 +249,7 @@ export default function Home() {
             </div>
           </div>
           <div className="fade-left text-center">
-            <div style={{ width: '280px', height: '360px', background: 'var(--gradient-primary)', margin: '0 auto', borderRadius: '4px 12px 12px 4px', boxShadow: '-15px 15px 40px rgba(8,12,24,0.15)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', padding: '2.5rem', position: 'relative', borderRight: '1px solid rgba(255,255,255,0.1)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ width: 'min(280px, 100%)', height: '360px', background: 'var(--gradient-primary)', margin: '0 auto', borderRadius: '4px 12px 12px 4px', boxShadow: '-15px 15px 40px rgba(8,12,24,0.15)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', padding: '2.5rem', position: 'relative', borderRight: '1px solid rgba(255,255,255,0.1)', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                {/* Book binding effect */}
                <div style={{ position: 'absolute', left: '15px', top: 0, bottom: 0, width: '3px', background: 'rgba(255,255,255,0.15)', boxShadow: '2px 0 5px rgba(0,0,0,0.2)' }}></div>
                <div style={{ position: 'absolute', left: '22px', top: 0, bottom: 0, width: '1px', background: 'rgba(255,255,255,0.05)' }}></div>

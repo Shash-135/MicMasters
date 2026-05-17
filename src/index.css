@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap");
+@import "tailwindcss";
+@import "./css/style.css";
+@import "./css/components.css";
+@import "./css/pages.css";
+@import "./css/animations.css";
+@import "./css/hero_styles.css";
+
+/* Root fade-in */
+#root {
+  animation: rootFadeIn 0.4s ease-out;
+}
+
+@keyframes rootFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -6,8 +6,6 @@ export default function Workshops() {
   return (
     <>
       <header className="hero hero--subpage">
-        <div className="hero-corner hero-corner--tl"></div>
-        <div className="hero-corner hero-corner--br"></div>
         <div className="hero-crest"></div>
         <div className="hero-fade"></div>
         <div className="hero-content">

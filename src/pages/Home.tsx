@@ -287,13 +287,13 @@ export default function Home() {
       <section className="section-padding bg-alt">
         <div className="container split-grid" style={{ alignItems: 'center' }}>
           <div className="fade-right">
-            <div style={{ background: 'var(--color-light)', padding: '3rem', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)' }}>
-              <span style={{ color: 'var(--color-accent)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.85rem', marginBottom: '1rem', display: 'block' }}>Free Resource</span>
-              <h2 className="section-title left-align" style={{ fontSize: 'clamp(1.8rem, 3vw, 2.2rem)', marginBottom: '1rem' }}>The 3-Minute Pre-Speech Ritual</h2>
-              <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem', fontSize: '1.1rem' }}>Not ready to enroll yet? Download our free, battle-tested guide to eliminating stage fright right before you step up to the mic.</p>
-              <form style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }} onSubmit={(e) => { e.preventDefault(); alert("Lead captured! Guide will be sent via email."); }}>
-                <input type="email" placeholder="Enter your email address" style={{ flex: '1 1 200px', padding: '14px 20px', border: '1px solid #ddd', borderRadius: 'var(--radius-sm)', outline: 'none' }} required />
-                <button type="submit" className="btn btn-primary" style={{ whiteSpace: 'nowrap', padding: '14px 24px' }}>Get the Free Guide</button>
+            <div className="lead-magnet-card">
+              <span className="lead-magnet-badge">Free Resource</span>
+              <h2 className="section-title left-align lead-magnet-title">The 3-Minute Pre-Speech Ritual</h2>
+              <p className="lead-magnet-text">Not ready to enroll yet? Download our free, battle-tested guide to eliminating stage fright right before you step up to the mic.</p>
+              <form className="lead-magnet-form" onSubmit={(e) => { e.preventDefault(); alert("Lead captured! Guide will be sent via email."); }}>
+                <input type="email" placeholder="Enter your email address" className="lead-magnet-input" required />
+                <button type="submit" className="btn btn-primary lead-magnet-btn">Get the Free Guide</button>
               </form>
             </div>
           </div>

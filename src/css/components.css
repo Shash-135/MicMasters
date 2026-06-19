@@ -506,3 +506,88 @@ textarea.form-control {
   border-radius: var(--radius-lg);
 }
 
+/* ─── Lead Magnet Section ─── */
+.lead-magnet-card {
+  background: var(--color-light);
+  padding: 3rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.lead-magnet-badge {
+  color: var(--color-accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.lead-magnet-title {
+  font-size: clamp(1.8rem, 3vw, 2.2rem);
+  margin-bottom: 1rem;
+}
+
+.lead-magnet-text {
+  color: var(--color-text-muted);
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.lead-magnet-form {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.lead-magnet-input {
+  flex: 1 1 200px;
+  padding: 14px 20px;
+  border: 1px solid #ddd;
+  border-radius: var(--radius-sm);
+  outline: none;
+  background: var(--color-light);
+  color: var(--color-text-body);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lead-magnet-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.18);
+}
+
+.lead-magnet-btn {
+  white-space: nowrap;
+  padding: 14px 24px;
+}
+
+@media (max-width: 768px) {
+  .lead-magnet-card {
+    padding: 2.5rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .lead-magnet-card {
+    padding: 1.75rem 1.25rem;
+  }
+  
+  .lead-magnet-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .lead-magnet-input {
+    width: 100%;
+    flex: none;
+  }
+  
+  .lead-magnet-btn {
+    width: 100%;
+    white-space: normal;
+  }
+}
+
+

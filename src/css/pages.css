@@ -302,6 +302,17 @@
   box-shadow: var(--shadow-md);
 }
 
+/* ─── Home Page ─── */
+.home-cinematic-section {
+  height: clamp(400px, 70vh, 800px);
+}
+
+@media (max-width: 768px) {
+  .home-cinematic-section {
+    height: clamp(240px, 42vh, 420px);
+  }
+}
+
 .contact-info-card {
   background: var(--color-primary);
   color: var(--color-light);

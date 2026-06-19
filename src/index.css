@@ -5,6 +5,7 @@
 @import "./css/pages.css";
 @import "./css/animations.css";
 @import "./css/hero_styles.css";
+@import "./css/admin.css";
 
 /* Root fade-in */
 #root {

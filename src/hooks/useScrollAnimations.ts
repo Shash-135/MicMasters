@@ -5,7 +5,8 @@ export function useScrollAnimations() {
   const location = useLocation();
 
   useEffect(() => {
-    const animatedElements = document.querySelectorAll(".fade-up, .fade-in, .fade-left, .fade-right");
+    const selector = ".fade-up, .fade-in, .fade-left, .fade-right";
+    const animatedElements = document.querySelectorAll(selector);
 
     if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver(
@@ -20,10 +21,36 @@ export function useScrollAnimations() {
         { threshold: 0.15 }
       );
 
-      animatedElements.forEach((element) => observer.observe(element));
+      const observeAnimatedElement = (element: Element) => {
+        if (!element.classList.contains("in-view")) {
+          observer.observe(element);
+        }
+      };
+
+      animatedElements.forEach((element) => observeAnimatedElement(element));
+
+      // Observe future nodes so async-rendered cards do not stay hidden at opacity: 0.
+      const mutationObserver = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (!(node instanceof Element)) {
+              return;
+            }
+
+            if (node.matches(selector)) {
+              observeAnimatedElement(node);
+            }
+
+            node.querySelectorAll(selector).forEach((child) => observeAnimatedElement(child));
+          });
+        });
+      });
+
+      mutationObserver.observe(document.body, { childList: true, subtree: true });
 
       return () => {
         animatedElements.forEach((element) => observer.unobserve(element));
+        mutationObserver.disconnect();
         observer.disconnect();
       };
     } else {

@@ -1,56 +1,47 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 import { usePageTitle } from "../hooks/usePageTitle";
+import { normalizeVideoUrl } from "../utils/video";
+import VideoEmbed from "../components/VideoEmbed";
 
 export default function Home() {
   usePageTitle();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const clipEndSeconds = 10;
+  const [homeVideoUrl, setHomeVideoUrl] = useState<string | null>(null);
+  const [homeVideoError, setHomeVideoError] = useState<string | null>(null);
+  const [testimonials, setTestimonials] = useState<any[]>([]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Play the first 10 seconds whenever the section is visible.
-            const video = videoRef.current;
-
-            if (!video) {
-              return;
-            }
-
-            video.currentTime = 0;
-            video.play().catch((e) => console.log("Autoplay prevented:", e));
-          } else {
-            // Pause video when scrolled out of view
-            videoRef.current?.pause();
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
-    }
-
-    return () => {
-      if (videoRef.current) {
-        observer.unobserve(videoRef.current);
+    const fetchHomeVideo = async () => {
+      try {
+        const docRef = doc(db, 'settings', 'homepage');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists() && docSnap.data().videoUrl) {
+          setHomeVideoUrl(normalizeVideoUrl(docSnap.data().videoUrl));
+          setHomeVideoError(null);
+        }
+      } catch (error) {
+        console.error("Error fetching homepage video:", error);
+        setHomeVideoError("Homepage video is unavailable. Check Firestore public read rules for settings/homepage.");
       }
     };
+    fetchHomeVideo();
+
+    import("firebase/firestore").then(({ collection, onSnapshot }) => {
+      const unsubscribe = onSnapshot(collection(db, 'testimonials'), (snapshot) => {
+        const tests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // Sort by newest first
+        tests.sort((a: any, b: any) => {
+          const timeA = a.createdAt && typeof a.createdAt.toMillis === 'function' ? a.createdAt.toMillis() : 0;
+          const timeB = b.createdAt && typeof b.createdAt.toMillis === 'function' ? b.createdAt.toMillis() : 0;
+          return timeB - timeA;
+        });
+        setTestimonials(tests.slice(0, 3)); // Only show latest 3 on the home page
+      });
+      return () => unsubscribe();
+    });
   }, []);
-
-  const handleVideoTimeUpdate = () => {
-    const video = videoRef.current;
-
-    if (!video || video.currentTime < clipEndSeconds) {
-      return;
-    }
-
-    video.currentTime = 0;
-    video.play().catch((e) => console.log("Autoplay prevented:", e));
-  };
 
   return (
     <>
@@ -91,20 +82,25 @@ export default function Home() {
       </div>
 
       {/* Cinematic Full Width Video Section */}
-      <section style={{ width: '100%', height: 'clamp(400px, 70vh, 800px)', position: 'relative', overflow: 'hidden' }}>
-        <video 
-          ref={videoRef}
-          poster="/assets/images/mahesh_instructor.jpg"
-          preload="metadata"
-          muted 
-          onTimeUpdate={handleVideoTimeUpdate}
-          playsInline
-          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-        >
-          <source src="/assets/videos/speech-optimized.mp4" type="video/mp4" />
-          <source src="/assets/videos/speech-optimized.webm" type="video/webm" />
-          Your browser does not support the video tag.
-        </video>
+      <section className="home-cinematic-section" style={{ width: '100%', position: 'relative', overflow: 'hidden', backgroundColor: '#000' }}>
+        {homeVideoUrl ? (
+            <VideoEmbed 
+            url={homeVideoUrl} 
+            playing 
+            loop 
+            muted 
+            width="100%" 
+            height="150%" 
+            style={{ position: 'absolute', top: '-25%', left: 0, pointerEvents: 'none' }}
+          />
+        ) : (
+          <div style={{ width: '100%', height: '100%', background: '#080c18' }}></div>
+        )}
+        {homeVideoError && (
+          <div style={{ position: 'absolute', top: '1.5rem', left: '50%', transform: 'translateX(-50%)', color: 'rgba(255,255,255,0.9)', fontSize: '0.85rem', padding: '0.5rem 0.85rem', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '999px', background: 'rgba(8,12,24,0.55)' }}>
+            {homeVideoError}
+          </div>
+        )}
         {/* Dark gradient overlay for a premium cinematic look */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, rgba(8,12,24,0.1) 0%, rgba(8,12,24,0.6) 100%)', pointerEvents: 'none' }}></div>
         
@@ -180,6 +176,59 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Chapter 4.5: The Voices */}
+      {testimonials.length > 0 && (
+        <section className="section-padding bg-cream">
+          <div className="container">
+            <div className="text-center fade-up" style={{ marginBottom: '3rem' }}>
+              <span style={{ color: 'var(--color-accent)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.85rem', marginBottom: '1rem', display: 'block' }}>Student Success</span>
+              <h2 className="section-title">Hear It From Them</h2>
+            </div>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+              {testimonials.map((test) => (
+                <div key={test.id} className="fade-up" style={{ background: 'var(--color-light)', borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-md)', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ width: '100%', aspectRatio: '16/9', background: '#000', position: 'relative' }}>
+                    <VideoEmbed
+                      url={normalizeVideoUrl(test.videoUrl || '')}
+                      playing={false}
+                      controls={true}
+                      width="100%"
+                      height="100%"
+                      style={{ position: 'absolute', top: 0, left: 0 }}
+                    />
+                  </div>
+                  <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                      <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--color-primary)', color: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '1rem' }}>
+                        {test.name ? test.name[0].toUpperCase() : 'S'}
+                      </div>
+                      <div>
+                        <h3 style={{ fontSize: '1rem', marginBottom: '0', color: 'var(--color-primary)' }}>
+                          {test.name}
+                        </h3>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
+                          {test.course}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div
+              className="text-center fade-up"
+              style={{ marginTop: '3rem', position: 'relative', zIndex: 1 }}
+            >
+              <Link to="/testimonials" className="btn btn-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                View All Testimonials <i className="fas fa-arrow-right"></i>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Chapter 5: The Plan */}
       <section className="section-padding bg-cream">

@@ -31,7 +31,7 @@ export default function About() {
 
       {/* Chapter 2: The Philosophy */}
       <section className="section-padding bg-cream">
-        <div className="container text-center fade-up" style={{ maxWidth: '800px' }}>
+        <div className="container text-center fade-up" style={{ maxWidth: '800px', margin: '0 auto' }}>
           <h2 className="section-title">Charisma is a Learnable Skill</h2>
           <p className="lead mx-auto" style={{ fontSize: '1.2rem', marginTop: '2rem', color: 'var(--color-text-body)' }}>
             There is a myth that great speakers are born with a gift. That confidence is a genetic trait. At Mic Masters Academy, we know the truth: <strong>confidence is a byproduct of competence</strong>.

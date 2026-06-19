@@ -17,12 +17,16 @@ export default function Home() {
       try {
         const docRef = doc(db, 'settings', 'homepage');
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists() && docSnap.data().videoUrl) {
+        if (docSnap.exists() && docSnap.data().videoUrl && docSnap.data().videoUrl.trim() !== '') {
           setHomeVideoUrl(normalizeVideoUrl(docSnap.data().videoUrl));
+          setHomeVideoError(null);
+        } else {
+          setHomeVideoUrl(null);
           setHomeVideoError(null);
         }
       } catch (error) {
         console.error("Error fetching homepage video:", error);
+        setHomeVideoUrl(null);
         setHomeVideoError("Homepage video is unavailable. Check Firestore public read rules for settings/homepage.");
       }
     };
@@ -82,9 +86,9 @@ export default function Home() {
       </div>
 
       {/* Cinematic Full Width Video Section */}
-      <section className="home-cinematic-section" style={{ width: '100%', position: 'relative', overflow: 'hidden', backgroundColor: '#000' }}>
-        {homeVideoUrl ? (
-            <VideoEmbed 
+      {homeVideoUrl && (
+        <section className="home-cinematic-section" style={{ width: '100%', position: 'relative', overflow: 'hidden', backgroundColor: '#000' }}>
+          <VideoEmbed 
             url={homeVideoUrl} 
             playing 
             loop 
@@ -93,24 +97,22 @@ export default function Home() {
             height="150%" 
             style={{ position: 'absolute', top: '-25%', left: 0, pointerEvents: 'none' }}
           />
-        ) : (
-          <div style={{ width: '100%', height: '100%', background: '#080c18' }}></div>
-        )}
-        {homeVideoError && (
-          <div style={{ position: 'absolute', top: '1.5rem', left: '50%', transform: 'translateX(-50%)', color: 'rgba(255,255,255,0.9)', fontSize: '0.85rem', padding: '0.5rem 0.85rem', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '999px', background: 'rgba(8,12,24,0.55)' }}>
-            {homeVideoError}
+          {homeVideoError && (
+            <div style={{ position: 'absolute', top: '1.5rem', left: '50%', transform: 'translateX(-50%)', color: 'rgba(255,255,255,0.9)', fontSize: '0.85rem', padding: '0.5rem 0.85rem', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '999px', background: 'rgba(8,12,24,0.55)' }}>
+              {homeVideoError}
+            </div>
+          )}
+          {/* Dark gradient overlay for a premium cinematic look */}
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, rgba(8,12,24,0.1) 0%, rgba(8,12,24,0.6) 100%)', pointerEvents: 'none' }}></div>
+          
+          {/* Optional text over video */}
+          <div style={{ position: 'absolute', bottom: '10%', left: '0', width: '100%', textAlign: 'center', pointerEvents: 'none' }}>
+            <div className="container">
+              <h2 style={{ color: 'white', fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', textShadow: '0 4px 20px rgba(0,0,0,0.5)', margin: 0 }}>Watch the Transformation</h2>
+            </div>
           </div>
-        )}
-        {/* Dark gradient overlay for a premium cinematic look */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, rgba(8,12,24,0.1) 0%, rgba(8,12,24,0.6) 100%)', pointerEvents: 'none' }}></div>
-        
-        {/* Optional text over video */}
-        <div style={{ position: 'absolute', bottom: '10%', left: '0', width: '100%', textAlign: 'center', pointerEvents: 'none' }}>
-          <div className="container">
-            <h2 style={{ color: 'white', fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', textShadow: '0 4px 20px rgba(0,0,0,0.5)', margin: 0 }}>Watch the Transformation</h2>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Chapter 2: The Conflict */}
       <section id="the-story" className="section-padding bg-cream" style={{ padding: '6rem 0' }}>

@@ -158,22 +158,17 @@ export default function Testimonials() {
               const cardStyles =
                 {
                   background: theme.card,
-                  borderRadius: 'var(--radius-lg)',
                   boxShadow: isActive ? '0 0 0 3px rgba(201,162,39,0.9), var(--shadow-lg)' : 'var(--shadow-lg)',
-                  overflow: 'hidden',
-                  display: 'flex',
-                  flexWrap: 'wrap' as const,
                   transform: isActive ? 'translateY(-4px)' : 'translateY(0)',
-                  transition: 'transform 0.25s ease, box-shadow 0.25s ease'
                 };
               return (
                 <article
                   key={test.id}
                   ref={(element) => { itemRefs.current[index] = element; }}
-                  className="delay-100"
+                  className="delay-100 testimonial-row-card"
                   style={cardStyles}
                 >
-                  <div style={{ flex: '1 1 400px', background: '#000', position: 'relative', aspectRatio: '16 / 9', minHeight: '350px' }}>
+                  <div className="testimonial-video-container">
                     <VideoEmbed
                       url={videoUrl}
                       playing={isActive}
@@ -185,7 +180,7 @@ export default function Testimonials() {
                       style={{ position: 'absolute', top: 0, left: 0 }}
                     />
                   </div>
-                  <div style={{ flex: '1 1 400px', padding: '3rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', background: theme.panel, color: theme.quote }}>
+                  <div className="testimonial-content-container" style={{ background: theme.panel, color: theme.quote }}>
                     <i className="fas fa-quote-left" aria-hidden="true" style={{ position: 'absolute', top: '2rem', right: '3rem', fontSize: '5rem', color: index % 2 !== 0 ? 'rgba(255,255,255,0.03)' : 'rgba(201,162,39,0.05)' }}></i>
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', width: 'fit-content', marginBottom: '1rem', padding: '0.4rem 0.8rem', borderRadius: '999px', border: `1px solid ${theme.border}`, color: index % 2 !== 0 ? 'var(--color-accent)' : 'var(--color-text-muted)', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                       <Sparkles size={12} />
